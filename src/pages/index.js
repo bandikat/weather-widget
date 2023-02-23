@@ -29,11 +29,15 @@ export default function Home({data}) {
 
       {data.main.temp}
 
+      <Image src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+      alt="weather icon"
+      width={60}
+      height={60}
+      />
+
 
 
       </main>
     </>
   )
 }
-
-
