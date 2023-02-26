@@ -8,15 +8,36 @@ const inter = Inter({ subsets: ['latin'] })
 // This gets called on every request
 export async function getServerSideProps() {
   // Fetch data from external API
-  const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Vienna&units=metric&APPID=bc004243ecd78e40621876d43e03c2f9
+  const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Vienna&units=metric&lang=de&APPID=bc004243ecd78e40621876d43e03c2f9
   `);
   const data = await res.json();
-  
+
   // Pass data to the page via props
-  return { props:  { data } }
+  return { props: { data } }
 }
 
-export default function Home({data}) {
+function convertToDate(timestamp) {
+  const time = new Date(timestamp * 1000);
+
+  const weekDays = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+
+  const months = ['Januar', 'Februar', 'Maerz', 'April', 'Mai', 'Jun', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+  const month = months[time.getMonth()];
+
+  const date = time.getDate();
+
+  return weekDays[time.getUTCDay()] + ' ' + date + '.' + month + ' ' + time.getFullYear();
+}
+
+function styleTemperature(temp) {
+  return temp + '°C';
+}
+
+function styleFeeledTemperature(temp) {
+  return 'gefühlte Temperatur: ' + styleTemperature(temp);
+}
+
+export default function Home({ data }) {
   return (
     <>
       <Head>
@@ -25,18 +46,26 @@ export default function Home({data}) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-
-      {data.main.temp}
-
-      <Image src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
-      alt="weather icon"
-      width={60}
-      height={60}
-      />
-
-
-
+      <main className={styles.grid}>
+        <div>
+          <h3>{data.name}</h3>
+          <div>{convertToDate(data.dt)}</div>
+        </div>
+        <div>
+          <div>
+            <Image src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+              alt="weather icon"
+              width={60}
+              height={60}
+            />
+          </div>
+          <div>
+            <h1>{styleTemperature(Math.ceil(data.main.temp_max))}</h1>
+            <h2>{styleTemperature(Math.ceil(data.main.temp_min))}</h2>
+            <div>{data.weather[0].description}</div>
+            <div>{styleFeeledTemperature(Math.ceil(data.main.feels_like))}</div>
+          </div>
+        </div>
       </main>
     </>
   )
