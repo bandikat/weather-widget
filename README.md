@@ -8,7 +8,7 @@ It uses
 - React based technology
 - Server-side rendering (SSR)
 
-This project can be seen [`here`](https://openweathermap.org/api).
+This project can be seen [`here`](https://weather-app-nu-sage.vercel.app/).
 
 ## Running locally
 
