@@ -11,7 +11,7 @@ export async function getServerSideProps() {
   const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Vienna&units=metric&lang=de&APPID=bc004243ecd78e40621876d43e03c2f9
   `);
   const data = await res.json();
-
+  
   // Pass data to the page via props
   return { props: { data } }
 }
@@ -46,19 +46,18 @@ export default function Home({ data }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.grid}>
+      <main>
         <div>
-          <h3>{data.name}</h3>
+          <h2>{data.name}</h2>
           <div>{convertToDate(data.dt)}</div>
         </div>
-        <div>
-          <div>
-            <Image src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+       
+        <div className={styles.grid}>
+        <Image src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
               alt="weather icon"
-              width={60}
-              height={60}
+              width={100}
+              height={100}
             />
-          </div>
           <div>
             <h1>{styleTemperature(Math.ceil(data.main.temp_max))}</h1>
             <h2>{styleTemperature(Math.ceil(data.main.temp_min))}</h2>
