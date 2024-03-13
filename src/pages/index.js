@@ -46,25 +46,27 @@ export default function Home({ data }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <div>
+      <main className={styles.grid}>
+
+        <div className={styles.item1}>
           <h2>{data.name}</h2>
           <div>{convertToDate(data.dt)}</div>
         </div>
        
-        <div className={styles.grid}>
+        <div className={styles.image}>
         <Image src={`http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
               alt="weather icon"
               width={100}
               height={100}
             />
+          </div>
           <div>
             <h1>{styleTemperature(Math.ceil(data.main.temp_max))}</h1>
             <h2>{styleTemperature(Math.ceil(data.main.temp_min))}</h2>
             <div>{data.weather[0].description}</div>
             <div>{styleFeeledTemperature(Math.ceil(data.main.feels_like))}</div>
           </div>
-        </div>
+        
       </main>
     </>
   )
